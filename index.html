@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.62 - OpenPorte</title>
+    <title>🔧 Posa App v1.63 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.62 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.63 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -779,7 +779,7 @@
     <!-- HEADER -->
     <header class="posa-header">
         <div class="logo">
-            🔧 Posa App v1.62
+            🔧 Posa App v1.63
         </div>
         <div class="project-info">
             <span id="project-name">Nessun progetto caricato</span>
@@ -824,7 +824,7 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.62 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.63 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
@@ -946,7 +946,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.62 - Inizializzazione...');
+            console.log('🔧 Posa App v1.63 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -1213,7 +1213,7 @@
                                 ...p,
                                 customerName: nomeCliente,
                                 indirizzo: indirizzo,
-                                numPosizioni: content.posizioni ? content.posizioni.length : 0,
+                                numPosizioni: (content.posizioni || content.positions || []).length,
                                 linkSchizzo: content.linkSchizzo || ''
                             };
                         }
@@ -1311,7 +1311,15 @@
             
             // L'API GitHub restituisce il contenuto in base64
             const content = atob(data.content.replace(/\n/g, ''));
-            return JSON.parse(content);
+            const projectData = JSON.parse(content);
+            
+            // NORMALIZZA: positions (inglese) -> posizioni (italiano)
+            if (!projectData.posizioni && projectData.positions) {
+                projectData.posizioni = projectData.positions;
+                console.log('📋 Normalizzato: positions → posizioni (' + projectData.positions.length + ')');
+            }
+            
+            return projectData;
         }
         
         /**
@@ -2029,7 +2037,7 @@
         }
         
         // Log finale
-        console.log('🎯 Posa App v1.62 caricata');
+        console.log('🎯 Posa App v1.63 caricata');
     </script>
 </body>
 </html>
