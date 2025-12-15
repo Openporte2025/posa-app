@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.6 - OpenPorte</title>
+    <title>🔧 Posa App v1.61 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.6 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.61 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -779,7 +779,7 @@
     <!-- HEADER -->
     <header class="posa-header">
         <div class="logo">
-            🔧 Posa App v1.6
+            🔧 Posa App v1.61
         </div>
         <div class="project-info">
             <span id="project-name">Nessun progetto caricato</span>
@@ -824,7 +824,7 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.6 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.61 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
@@ -946,7 +946,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.6 - Inizializzazione...');
+            console.log('🔧 Posa App v1.61 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -1088,11 +1088,15 @@
                          style="padding: 1rem; background: #f7fafc; border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s;"
                          onmouseover="this.style.background='#e2e8f0'"
                          onmouseout="this.style.background='#f7fafc'">
-                        <div style="font-weight: 600; color: #2d3748; margin-bottom: 0.25rem;">
-                            📂 ${p.name}
+                        <div style="font-weight: 600; color: #2d3748; margin-bottom: 0.25rem; font-size: 1.1rem;">
+                            👤 ${p.customerName || 'Cliente N/D'}
                         </div>
-                        <div style="font-size: 0.85rem; color: #718096;">
-                            ${p.path}
+                        <div style="font-size: 0.9rem; color: #4a5568; margin-bottom: 0.25rem;">
+                            📍 ${p.indirizzo || 'Indirizzo N/D'}
+                        </div>
+                        <div style="font-size: 0.8rem; color: #718096; display: flex; justify-content: space-between;">
+                            <span>📂 ${p.name}</span>
+                            <span>📦 ${p.numPosizioni || '?'} posizioni</span>
                         </div>
                     </div>
                 `).join('');
@@ -1145,7 +1149,7 @@
         }
         
         /**
-         * Carica lista progetti da GitHub
+         * Carica lista progetti da GitHub CON DETTAGLI CLIENTE
          */
         async function loadProjectsListFromGitHub() {
             const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/git/trees/${GITHUB_CONFIG.branch}?recursive=1`;
@@ -1179,8 +1183,35 @@
                     sha: f.sha
                 }));
             
-            console.log(`📂 Trovati ${projectFiles.length} progetti`);
-            return projectFiles;
+            console.log(`📂 Trovati ${projectFiles.length} progetti, carico dettagli...`);
+            
+            // Carica dettagli cliente per ogni progetto (in parallelo)
+            const projectsWithDetails = await Promise.all(
+                projectFiles.map(async (p) => {
+                    try {
+                        const detailUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${p.path}?ref=${GITHUB_CONFIG.branch}`;
+                        const detailResponse = await fetch(detailUrl, { headers });
+                        
+                        if (detailResponse.ok) {
+                            const fileData = await detailResponse.json();
+                            const content = JSON.parse(atob(fileData.content));
+                            
+                            return {
+                                ...p,
+                                customerName: content.customerName || content.cliente || '',
+                                indirizzo: content.indirizzo || content.address || '',
+                                numPosizioni: content.posizioni ? content.posizioni.length : 0
+                            };
+                        }
+                    } catch (e) {
+                        console.warn('⚠️ Errore caricamento dettagli:', p.name, e);
+                    }
+                    return p;
+                })
+            );
+            
+            console.log(`✅ Dettagli caricati per ${projectsWithDetails.length} progetti`);
+            return projectsWithDetails;
         }
         
         /**
@@ -1984,7 +2015,7 @@
         }
         
         // Log finale
-        console.log('🎯 Posa App v1.6 caricata');
+        console.log('🎯 Posa App v1.61 caricata');
     </script>
 </body>
 </html>
