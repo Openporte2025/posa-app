@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.63 - OpenPorte</title>
+    <title>🔧 Posa App v1.64 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.63 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.64 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -779,7 +779,7 @@
     <!-- HEADER -->
     <header class="posa-header">
         <div class="logo">
-            🔧 Posa App v1.63
+            🔧 Posa App v1.64
         </div>
         <div class="project-info">
             <span id="project-name">Nessun progetto caricato</span>
@@ -824,7 +824,7 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.63 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.64 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
@@ -946,7 +946,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.63 - Inizializzazione...');
+            console.log('🔧 Posa App v1.64 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -1317,6 +1317,30 @@
             if (!projectData.posizioni && projectData.positions) {
                 projectData.posizioni = projectData.positions;
                 console.log('📋 Normalizzato: positions → posizioni (' + projectData.positions.length + ')');
+            }
+            
+            // NORMALIZZA: qta -> quantita per tutti i prodotti
+            const tipiProdotto = ['infisso', 'persiana', 'tapparella', 'zanzariera', 'cassonetto', 'portaInterna', 'ingresso'];
+            if (projectData.posizioni) {
+                projectData.posizioni.forEach(pos => {
+                    tipiProdotto.forEach(tipo => {
+                        if (pos[tipo]) {
+                            // Converti qta -> quantita
+                            if (pos[tipo].qta !== undefined && pos[tipo].quantita === undefined) {
+                                pos[tipo].quantita = parseInt(pos[tipo].qta) || 0;
+                            }
+                            // Se non c'è quantita, imposta default 1 se ha dati significativi
+                            if (pos[tipo].quantita === undefined) {
+                                if (pos[tipo].BRM_L || pos[tipo].azienda) {
+                                    pos[tipo].quantita = 1;
+                                } else {
+                                    pos[tipo].quantita = 0;
+                                }
+                            }
+                        }
+                    });
+                });
+                console.log('📦 Normalizzato: qta → quantita per prodotti');
             }
             
             return projectData;
@@ -2037,7 +2061,7 @@
         }
         
         // Log finale
-        console.log('🎯 Posa App v1.63 caricata');
+        console.log('🎯 Posa App v1.64 caricata');
     </script>
 </body>
 </html>
