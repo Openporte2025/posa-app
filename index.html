@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.70 - OpenPorte</title>
+    <title>🔧 Posa App v1.71 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.70 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.71 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -1040,7 +1040,7 @@
     
     <!-- HEADER COMPATTO -->
     <header class="posa-header">
-        <div class="logo">🔧 v1.70</div>
+        <div class="logo">🔧 v1.71</div>
         <div class="header-actions">
             <button class="header-btn" onclick="caricaProgetto()">📂</button>
             <button id="sync-btn" class="sync-status" onclick="syncManuale()">⟳</button>
@@ -1083,7 +1083,7 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.70 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.71 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
@@ -1205,7 +1205,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.70 - Inizializzazione...');
+            console.log('🔧 Posa App v1.71 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -2443,8 +2443,8 @@
                         </div>
                         <div class="prodotti-list">
                             ${tipiProdotti.map(tipo => {
-                                const iconMap = {'infisso': '🪟', 'persiana': '🚪', 'tapparella': '🎚️', 'zanzariera': '🦟', 'cassonetto': '📦'};
-                                const labelMap = {'infisso': 'Infissi', 'persiana': 'Persiane', 'tapparella': 'Tapparelle', 'zanzariera': 'Zanzariere', 'cassonetto': 'Cassonetti'};
+                                const iconMap = {'infisso': '🪟', 'persiana': '🚪', 'tapparella': '🎚️', 'zanzariera': '🦟', 'cassonetto': '📦', 'motore': '⚡'};
+                                const labelMap = {'infisso': 'Infissi', 'persiana': 'Persiane', 'tapparella': 'Tapparelle', 'zanzariera': 'Zanzariere', 'cassonetto': 'Cassonetti', 'motore': 'Motori'};
                                 const qtyTipo = prodotti.filter(p => p.tipo === tipo).reduce((s, p) => s + p.quantita, 0);
                                 return `<div class="prodotto-item"><span>${iconMap[tipo] || '📦'}</span> <span>${labelMap[tipo] || tipo}</span> <span class="prodotto-qty">×${qtyTipo}</span></div>`;
                             }).join('')}
@@ -2515,8 +2515,8 @@
             
             // Renderizza ogni tipo
             Object.entries(prodottiPerTipo).forEach(([tipo, items]) => {
-                const iconMap = {'infisso': '🪟', 'persiana': '🚪', 'tapparella': '🎚️', 'zanzariera': '🦟', 'cassonetto': '📦'};
-                const labelMap = {'infisso': 'Infissi', 'persiana': 'Persiane', 'tapparella': 'Tapparelle', 'zanzariera': 'Zanzariere', 'cassonetto': 'Cassonetti'};
+                const iconMap = {'infisso': '🪟', 'persiana': '🚪', 'tapparella': '🎚️', 'zanzariera': '🦟', 'cassonetto': '📦', 'motore': '⚡'};
+                const labelMap = {'infisso': 'Infissi', 'persiana': 'Persiane', 'tapparella': 'Tapparelle', 'zanzariera': 'Zanzariere', 'cassonetto': 'Cassonetti', 'motore': 'Motori'};
                 const totaleQty = items.reduce((s, i) => s + i.quantita, 0);
                 
                 html += `
@@ -2562,35 +2562,48 @@
             currentProject.posizioni.forEach((pos, posIndex) => {
                 tipiProdotti.forEach(tipo => {
                     const prodotto = pos[tipo];
+                    if (!prodotto || !prodotto.azienda) return;
                     
-                    if (prodotto && prodotto.quantita > 0 && prodotto.azienda) {
-                        // Normalizza nome azienda (prima lettera maiuscola)
-                        const aziendaRaw = prodotto.azienda.trim();
-                        const azienda = aziendaRaw.charAt(0).toUpperCase() + aziendaRaw.slice(1).toLowerCase();
-                        
-                        if (!raggruppamento[azienda]) {
-                            raggruppamento[azienda] = [];
-                        }
-                        
-                        const misure = prodotto.brm || prodotto.BRM_L ? 
-                            `L: ${prodotto.brm?.L || prodotto.BRM_L || 0}mm × H: ${prodotto.brm?.H || prodotto.BRM_H || 0}mm` : 
-                            null;
-                        
-                        // Ambiente senza N/D
-                        const ambiente = pos.ambiente || pos.name || pos.stanza || '';
-                        const piano = pos.piano || '';
-                        const locationParts = [piano, ambiente].filter(x => x && x !== 'N/D');
-                        
-                        raggruppamento[azienda].push({
-                            tipo: tipo,
-                            quantita: prodotto.quantita,
-                            posizioneId: pos.id || `P${String(posIndex + 1).padStart(3, '0')}`,
-                            posizioneIndex: posIndex,
-                            posizioneLocation: locationParts.join(' - ') || 'N/D',
-                            ambiente: ambiente,
-                            misure: misure
-                        });
+                    // Calcola quantità (considera anche motori.length per tapparelle)
+                    let qty = prodotto.quantita || 0;
+                    if (tipo === 'tapparella' && prodotto.serveMotore && prodotto.motori && prodotto.motori.length > 0) {
+                        qty = Math.max(qty, prodotto.motori.length);
                     }
+                    
+                    if (qty <= 0) return;
+                    
+                    // Normalizza nome azienda (prima lettera maiuscola)
+                    const aziendaRaw = prodotto.azienda.trim();
+                    const azienda = aziendaRaw.charAt(0).toUpperCase() + aziendaRaw.slice(1).toLowerCase();
+                    
+                    if (!raggruppamento[azienda]) {
+                        raggruppamento[azienda] = [];
+                    }
+                    
+                    const misure = prodotto.brm || prodotto.BRM_L ? 
+                        `L: ${prodotto.brm?.L || prodotto.BRM_L || 0}mm × H: ${prodotto.brm?.H || prodotto.BRM_H || 0}mm` : 
+                        null;
+                    
+                    // Ambiente senza N/D
+                    const ambiente = pos.ambiente || pos.name || pos.stanza || '';
+                    const piano = pos.piano || '';
+                    const locationParts = [piano, ambiente].filter(x => x && x !== 'N/D');
+                    
+                    // Tipo visualizzato (Motori vs Tapparelle)
+                    let tipoDisplay = tipo;
+                    if (tipo === 'tapparella' && prodotto.serveMotore && !prodotto.serveTapparella) {
+                        tipoDisplay = 'motore';
+                    }
+                    
+                    raggruppamento[azienda].push({
+                        tipo: tipoDisplay,
+                        quantita: qty,
+                        posizioneId: pos.id || `P${String(posIndex + 1).padStart(3, '0')}`,
+                        posizioneIndex: posIndex,
+                        posizioneLocation: locationParts.join(' - ') || 'N/D',
+                        ambiente: ambiente,
+                        misure: misure
+                    });
                 });
             });
             
@@ -2736,7 +2749,7 @@
         }
         
         // Log finale
-        console.log('🎯 Posa App v1.70 caricata');
+        console.log('🎯 Posa App v1.71 caricata');
     </script>
 </body>
 </html>
