@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.68 - OpenPorte</title>
+    <title>🔧 Posa App v1.69 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.68 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.69 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -353,123 +353,48 @@
             opacity: 0.8;
         }
         
-        /* RIEPILOGO QUANTITÀ */
-        .home-riepilogo {
+        /* RIEPILOGO QUANTITÀ COMPATTO */
+        .home-riepilogo-compact {
             background: white;
-            border-radius: 16px;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-        
-        .home-riepilogo-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .home-riepilogo-header > span:first-child {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #2d3748;
-        }
-        
-        .home-totale {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 1rem;
-        }
-        
-        .home-qty-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-        }
-        
-        .home-qty-item {
-            background: #f8fafc;
             border-radius: 12px;
-            padding: 1rem 0.5rem;
-            text-align: center;
-            border: 2px solid #e2e8f0;
-        }
-        
-        .home-qty-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
-        }
-        
-        .home-qty-num {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #4f46e5;
-            line-height: 1;
-        }
-        
-        .home-qty-label {
-            font-size: 0.75rem;
-            color: #718096;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-top: 0.25rem;
-        }
-        
-        .home-qty-posizioni {
-            background: #fef3c7;
-            border-color: #f59e0b;
-        }
-        
-        .home-qty-posizioni .home-qty-num {
-            color: #d97706;
-        }
-        
-        /* ACCESSO RAPIDO VISTE */
-        .home-viste {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .home-vista-btn {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: white;
-            padding: 1.25rem;
-            border-radius: 12px;
-            cursor: pointer;
+            padding: 1rem;
+            margin-bottom: 1rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transition: all 0.2s;
-            border-left: 4px solid #4f46e5;
         }
         
-        .home-vista-btn:hover, .home-vista-btn:active {
-            background: #f8fafc;
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .riepilogo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
         }
         
-        .home-vista-icon {
-            font-size: 1.5rem;
+        .qty-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f0f4f8;
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
         }
         
-        .home-vista-label {
-            flex: 1;
-            font-weight: 600;
+        .qty-chip strong {
             font-size: 1.1rem;
-            color: #2d3748;
+            color: #4f46e5;
         }
         
-        .home-vista-arrow {
-            color: #4f46e5;
-            font-size: 1.25rem;
-            font-weight: 700;
+        .qty-chip span:last-child {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+        
+        .qty-chip-pos {
+            background: #fef3c7;
+        }
+        
+        .qty-chip-pos strong {
+            color: #d97706;
         }
         
         /* TOUCH OPTIMIZATION iPad */
@@ -1088,7 +1013,7 @@
     
     <!-- HEADER COMPATTO -->
     <header class="posa-header">
-        <div class="logo">🔧 v1.68</div>
+        <div class="logo">🔧 v1.69</div>
         <div class="header-actions">
             <button class="header-btn" onclick="caricaProgetto()">📂</button>
             <button id="sync-btn" class="sync-status" onclick="syncManuale()">⟳</button>
@@ -1099,19 +1024,16 @@
     <!-- NAVIGAZIONE VISTE -->
     <nav class="posa-nav">
         <button class="active" onclick="switchView('home')">
-            🏠 Home
+            🏠
         </button>
         <button onclick="switchView('posizione')">
-            📍 Posizione
-            <span class="indicator" id="indicator-posizione"></span>
+            📍 Stanze
         </button>
         <button onclick="switchView('prodotto')">
-            🪟 Prodotto
-            <span class="indicator" id="indicator-prodotto"></span>
+            📦 Prodotti
         </button>
         <button onclick="switchView('azienda')">
-            🏢 Azienda
-            <span class="indicator" id="indicator-azienda"></span>
+            🏭 Fornitori
         </button>
     </nav>
     
@@ -1130,7 +1052,7 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.68 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.69 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
@@ -1252,7 +1174,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.68 - Inizializzazione...');
+            console.log('🔧 Posa App v1.69 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -1752,9 +1674,10 @@
                 telefono = currentProject.telefono || currentProject.phone || '';
             }
             
-            // Conta prodotti per tipo
+            // Conta prodotti per tipo (distinguendo motori da tapparelle)
             const conteggi = {
                 infisso: { icon: '🪟', label: 'Infissi', qty: 0 },
+                motore: { icon: '⚡', label: 'Motori', qty: 0 },
                 tapparella: { icon: '🎚️', label: 'Tapparelle', qty: 0 },
                 cassonetto: { icon: '📦', label: 'Cassonetti', qty: 0 },
                 persiana: { icon: '🚪', label: 'Persiane', qty: 0 },
@@ -1764,12 +1687,44 @@
             let totaleGenerale = 0;
             if (currentProject.posizioni) {
                 currentProject.posizioni.forEach(pos => {
-                    Object.keys(conteggi).forEach(tipo => {
-                        if (pos[tipo] && pos[tipo].quantita > 0) {
-                            conteggi[tipo].qty += pos[tipo].quantita;
-                            totaleGenerale += pos[tipo].quantita;
+                    // Infissi
+                    if (pos.infisso && pos.infisso.quantita > 0) {
+                        conteggi.infisso.qty += pos.infisso.quantita;
+                        totaleGenerale += pos.infisso.quantita;
+                    }
+                    
+                    // Tapparelle VS Motori
+                    if (pos.tapparella) {
+                        const tap = pos.tapparella;
+                        if (tap.serveMotore && !tap.serveTapparella) {
+                            // Solo motori
+                            const numMotori = tap.motori ? tap.motori.length : (tap.quantita || 1);
+                            conteggi.motore.qty += numMotori;
+                            totaleGenerale += numMotori;
+                        } else if (tap.serveTapparella || tap.quantita > 0) {
+                            // Tapparelle vere
+                            conteggi.tapparella.qty += tap.quantita || 1;
+                            totaleGenerale += tap.quantita || 1;
                         }
-                    });
+                    }
+                    
+                    // Cassonetti
+                    if (pos.cassonetto && pos.cassonetto.quantita > 0) {
+                        conteggi.cassonetto.qty += pos.cassonetto.quantita;
+                        totaleGenerale += pos.cassonetto.quantita;
+                    }
+                    
+                    // Persiane
+                    if (pos.persiana && pos.persiana.quantita > 0) {
+                        conteggi.persiana.qty += pos.persiana.quantita;
+                        totaleGenerale += pos.persiana.quantita;
+                    }
+                    
+                    // Zanzariere
+                    if (pos.zanzariera && pos.zanzariera.quantita > 0) {
+                        conteggi.zanzariera.qty += pos.zanzariera.quantita;
+                        totaleGenerale += pos.zanzariera.quantita;
+                    }
                 });
             }
             
@@ -1807,54 +1762,19 @@
                         </div>
                     </div>
                     
-                    <!-- RIEPILOGO QUANTITÀ -->
-                    <div class="home-riepilogo">
-                        <div class="home-riepilogo-header">
-                            <span>📦 Riepilogo Prodotti</span>
-                            <span class="home-totale">${totaleGenerale} pezzi</span>
-                        </div>
-                        <div class="home-qty-grid">
-            `;
+                    <!-- RIEPILOGO QUANTITÀ COMPATTO -->
+                    <div class="home-riepilogo-compact">
+                        <div class="riepilogo-row">`;
             
-            // Aggiungi badge per ogni tipo prodotto
+            // Aggiungi badge per ogni tipo prodotto (layout compatto inline)
             Object.values(conteggi).forEach(item => {
                 if (item.qty > 0) {
-                    html += `
-                        <div class="home-qty-item">
-                            <div class="home-qty-icon">${item.icon}</div>
-                            <div class="home-qty-num">${item.qty}</div>
-                            <div class="home-qty-label">${item.label}</div>
-                        </div>
-                    `;
+                    html += `<div class="qty-chip"><span>${item.icon}</span><strong>${item.qty}</strong><span>${item.label}</span></div>`;
                 }
             });
             
             // Aggiungi posizioni
-            html += `
-                            <div class="home-qty-item home-qty-posizioni">
-                                <div class="home-qty-icon">📍</div>
-                                <div class="home-qty-num">${numPosizioni}</div>
-                                <div class="home-qty-label">Posizioni</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- ACCESSO RAPIDO VISTE -->
-                    <div class="home-viste">
-                        <div class="home-vista-btn" onclick="switchView('posizione')">
-                            <span class="home-vista-icon">📍</span>
-                            <span class="home-vista-label">Per Posizione</span>
-                            <span class="home-vista-arrow">→</span>
-                        </div>
-                        <div class="home-vista-btn" onclick="switchView('prodotto')">
-                            <span class="home-vista-icon">🪟</span>
-                            <span class="home-vista-label">Per Prodotto</span>
-                            <span class="home-vista-arrow">→</span>
-                        </div>
-                        <div class="home-vista-btn" onclick="switchView('azienda')">
-                            <span class="home-vista-icon">🏢</span>
-                            <span class="home-vista-label">Per Azienda</span>
-                            <span class="home-vista-arrow">→</span>
+            html += `<div class="qty-chip qty-chip-pos"><span>📍</span><strong>${numPosizioni}</strong><span>Stanze</span></div>
                         </div>
                     </div>
                 </div>
@@ -2777,7 +2697,7 @@
         }
         
         // Log finale
-        console.log('🎯 Posa App v1.68 caricata');
+        console.log('🎯 Posa App v1.69 caricata');
     </script>
 </body>
 </html>
