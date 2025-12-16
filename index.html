@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.66 - OpenPorte</title>
+    <title>🔧 Posa App v1.67 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.66 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.67 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -898,7 +898,7 @@
     
     <!-- HEADER COMPATTO -->
     <header class="posa-header">
-        <div class="logo">🔧 v1.66</div>
+        <div class="logo">🔧 v1.67</div>
         <div class="header-actions">
             <button class="header-btn" onclick="caricaProgetto()">📂</button>
             <button id="sync-btn" class="sync-status" onclick="syncManuale()">⟳</button>
@@ -956,7 +956,7 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.66 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.67 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
@@ -1078,7 +1078,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.66 - Inizializzazione...');
+            console.log('🔧 Posa App v1.67 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -2256,7 +2256,9 @@
                     const prodotto = pos[tipo];
                     
                     if (prodotto && prodotto.quantita > 0 && prodotto.azienda) {
-                        const azienda = prodotto.azienda;
+                        // Normalizza nome azienda (prima lettera maiuscola)
+                        const aziendaRaw = prodotto.azienda.trim();
+                        const azienda = aziendaRaw.charAt(0).toUpperCase() + aziendaRaw.slice(1).toLowerCase();
                         
                         if (!raggruppamento[azienda]) {
                             raggruppamento[azienda] = [];
@@ -2426,7 +2428,7 @@
         }
         
         // Log finale
-        console.log('🎯 Posa App v1.66 caricata');
+        console.log('🎯 Posa App v1.67 caricata');
     </script>
 </body>
 </html>
