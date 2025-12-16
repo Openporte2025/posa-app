@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.67 - OpenPorte</title>
+    <title>🔧 Posa App v1.68 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.67 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.68 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -280,6 +280,196 @@
         @keyframes toastIn {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           VISTA HOME - STILI
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .home-container {
+            padding: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* SEZIONE CLIENTE */
+        .home-cliente {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .home-cliente-nome {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+            letter-spacing: 1px;
+        }
+        
+        .home-campo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.15);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .home-campo:hover, .home-campo:active {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.02);
+        }
+        
+        .home-campo-icon {
+            font-size: 1.5rem;
+        }
+        
+        .home-campo-content {
+            flex: 1;
+        }
+        
+        .home-campo-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .home-campo-valore {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .home-campo-azioni {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        /* RIEPILOGO QUANTITÀ */
+        .home-riepilogo {
+            background: white;
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .home-riepilogo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .home-riepilogo-header > span:first-child {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2d3748;
+        }
+        
+        .home-totale {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .home-qty-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .home-qty-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .home-qty-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .home-qty-num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4f46e5;
+            line-height: 1;
+        }
+        
+        .home-qty-label {
+            font-size: 0.75rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 0.25rem;
+        }
+        
+        .home-qty-posizioni {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+        
+        .home-qty-posizioni .home-qty-num {
+            color: #d97706;
+        }
+        
+        /* ACCESSO RAPIDO VISTE */
+        .home-viste {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .home-vista-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 1.25rem;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.2s;
+            border-left: 4px solid #4f46e5;
+        }
+        
+        .home-vista-btn:hover, .home-vista-btn:active {
+            background: #f8fafc;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .home-vista-icon {
+            font-size: 1.5rem;
+        }
+        
+        .home-vista-label {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2d3748;
+        }
+        
+        .home-vista-arrow {
+            color: #4f46e5;
+            font-size: 1.25rem;
+            font-weight: 700;
         }
         
         /* TOUCH OPTIMIZATION iPad */
@@ -898,7 +1088,7 @@
     
     <!-- HEADER COMPATTO -->
     <header class="posa-header">
-        <div class="logo">🔧 v1.67</div>
+        <div class="logo">🔧 v1.68</div>
         <div class="header-actions">
             <button class="header-btn" onclick="caricaProgetto()">📂</button>
             <button id="sync-btn" class="sync-status" onclick="syncManuale()">⟳</button>
@@ -906,28 +1096,12 @@
         </div>
     </header>
     
-    <!-- BANNER INFO CLIENTE (visibile solo con progetto caricato) -->
-    <div id="cliente-banner" class="cliente-banner" style="display: none;">
-        <div class="cliente-nome" id="cliente-nome-display">-</div>
-        <div class="cliente-contatti">
-            <div class="cliente-campo" onclick="copiaClipboard('cliente-indirizzo')">
-                <span class="campo-icon">📍</span>
-                <span class="campo-valore" id="cliente-indirizzo">-</span>
-                <span class="campo-copia">📋</span>
-            </div>
-            <div class="cliente-campo" onclick="copiaClipboard('cliente-telefono')">
-                <span class="campo-icon">📞</span>
-                <span class="campo-valore" id="cliente-telefono">-</span>
-                <span class="campo-copia">📋</span>
-            </div>
-        </div>
-        <!-- RIEPILOGO QUANTITÀ -->
-        <div class="riepilogo-qty" id="riepilogo-qty"></div>
-    </div>
-    
     <!-- NAVIGAZIONE VISTE -->
     <nav class="posa-nav">
-        <button class="active" onclick="switchView('posizione')">
+        <button class="active" onclick="switchView('home')">
+            🏠 Home
+        </button>
+        <button onclick="switchView('posizione')">
             📍 Posizione
             <span class="indicator" id="indicator-posizione"></span>
         </button>
@@ -956,12 +1130,12 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.67 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.68 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
         let currentProject = null;
-        let currentView = 'posizione';
+        let currentView = 'home';
         let hasUnsavedChanges = false;
         
         // CONFIGURAZIONE GITHUB (token da localStorage)
@@ -1078,7 +1252,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.67 - Inizializzazione...');
+            console.log('🔧 Posa App v1.68 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -1091,11 +1265,7 @@
                     const projectName = currentProject.name || currentProject.client || 'Progetto';
                     console.log('✅ Progetto ripristinato:', projectName);
                     
-                    // Aggiorna banner cliente
-                    aggiornaBannerCliente();
-                    aggiornaRiepilogoQty();
-                    
-                    // Renderizza vista corrente
+                    // Renderizza vista corrente (Home mostrerà i dati)
                     switchView(currentView);
                 } catch (e) {
                     console.error('❌ Errore ripristino progetto:', e);
@@ -1144,6 +1314,9 @@
             
             // Renderizza vista appropriata
             switch(view) {
+                case 'home':
+                    mostraVistaHome();
+                    break;
                 case 'posizione':
                     mostraVistaPerPosizione();
                     break;
@@ -1393,10 +1566,6 @@
                 localStorage.setItem('posa_app_current_project', JSON.stringify(projectData));
                 localStorage.setItem('posa_app_project_path', projectPath);
                 
-                // Aggiorna Banner Cliente
-                aggiornaBannerCliente();
-                aggiornaRiepilogoQty();
-                
                 const projectName = projectData.name || projectData.client || 'Progetto';
                 console.log('✅ Progetto caricato:', projectName);
                 
@@ -1549,6 +1718,186 @@
                     syncBtn.classList.remove('error');
                 }, 3000);
             }
+        }
+        
+        /**
+         * ═══════════════════════════════════════════════════════════════════
+         * VISTA HOME - RIEPILOGO PROGETTO
+         * ═══════════════════════════════════════════════════════════════════
+         */
+        function mostraVistaHome() {
+            const content = document.getElementById('posa-content');
+            
+            if (!currentProject) {
+                mostraEmptyState();
+                return;
+            }
+            
+            // Estrai dati cliente
+            const nomeCliente = currentProject.name || currentProject.client || currentProject.customerName || 'Cliente';
+            
+            let indirizzo = '';
+            let citta = '';
+            if (currentProject.clientData) {
+                const cd = currentProject.clientData;
+                indirizzo = cd.indirizzo || '';
+                citta = cd.citta || '';
+            }
+            const indirizzoCompleto = [indirizzo, citta].filter(x => x).join(', ') || '-';
+            
+            let telefono = '';
+            if (currentProject.clientData && currentProject.clientData.telefono) {
+                telefono = currentProject.clientData.telefono;
+            } else {
+                telefono = currentProject.telefono || currentProject.phone || '';
+            }
+            
+            // Conta prodotti per tipo
+            const conteggi = {
+                infisso: { icon: '🪟', label: 'Infissi', qty: 0 },
+                tapparella: { icon: '🎚️', label: 'Tapparelle', qty: 0 },
+                cassonetto: { icon: '📦', label: 'Cassonetti', qty: 0 },
+                persiana: { icon: '🚪', label: 'Persiane', qty: 0 },
+                zanzariera: { icon: '🦟', label: 'Zanzariere', qty: 0 }
+            };
+            
+            let totaleGenerale = 0;
+            if (currentProject.posizioni) {
+                currentProject.posizioni.forEach(pos => {
+                    Object.keys(conteggi).forEach(tipo => {
+                        if (pos[tipo] && pos[tipo].quantita > 0) {
+                            conteggi[tipo].qty += pos[tipo].quantita;
+                            totaleGenerale += pos[tipo].quantita;
+                        }
+                    });
+                });
+            }
+            
+            const numPosizioni = currentProject.posizioni ? currentProject.posizioni.length : 0;
+            
+            // Genera HTML
+            let html = `
+                <div class="home-container">
+                    <!-- SEZIONE CLIENTE -->
+                    <div class="home-cliente">
+                        <div class="home-cliente-nome">${nomeCliente}</div>
+                        
+                        <div class="home-campo" onclick="copiaEApri('indirizzo', '${indirizzoCompleto}')">
+                            <div class="home-campo-icon">📍</div>
+                            <div class="home-campo-content">
+                                <div class="home-campo-label">Indirizzo</div>
+                                <div class="home-campo-valore">${indirizzoCompleto}</div>
+                            </div>
+                            <div class="home-campo-azioni">
+                                <span>📋</span>
+                                <span>🗺️</span>
+                            </div>
+                        </div>
+                        
+                        <div class="home-campo" onclick="copiaEChiama('${telefono}')">
+                            <div class="home-campo-icon">📞</div>
+                            <div class="home-campo-content">
+                                <div class="home-campo-label">Telefono</div>
+                                <div class="home-campo-valore">${telefono || '-'}</div>
+                            </div>
+                            <div class="home-campo-azioni">
+                                <span>📋</span>
+                                ${telefono ? '<span>📱</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- RIEPILOGO QUANTITÀ -->
+                    <div class="home-riepilogo">
+                        <div class="home-riepilogo-header">
+                            <span>📦 Riepilogo Prodotti</span>
+                            <span class="home-totale">${totaleGenerale} pezzi</span>
+                        </div>
+                        <div class="home-qty-grid">
+            `;
+            
+            // Aggiungi badge per ogni tipo prodotto
+            Object.values(conteggi).forEach(item => {
+                if (item.qty > 0) {
+                    html += `
+                        <div class="home-qty-item">
+                            <div class="home-qty-icon">${item.icon}</div>
+                            <div class="home-qty-num">${item.qty}</div>
+                            <div class="home-qty-label">${item.label}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            // Aggiungi posizioni
+            html += `
+                            <div class="home-qty-item home-qty-posizioni">
+                                <div class="home-qty-icon">📍</div>
+                                <div class="home-qty-num">${numPosizioni}</div>
+                                <div class="home-qty-label">Posizioni</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ACCESSO RAPIDO VISTE -->
+                    <div class="home-viste">
+                        <div class="home-vista-btn" onclick="switchView('posizione')">
+                            <span class="home-vista-icon">📍</span>
+                            <span class="home-vista-label">Per Posizione</span>
+                            <span class="home-vista-arrow">→</span>
+                        </div>
+                        <div class="home-vista-btn" onclick="switchView('prodotto')">
+                            <span class="home-vista-icon">🪟</span>
+                            <span class="home-vista-label">Per Prodotto</span>
+                            <span class="home-vista-arrow">→</span>
+                        </div>
+                        <div class="home-vista-btn" onclick="switchView('azienda')">
+                            <span class="home-vista-icon">🏢</span>
+                            <span class="home-vista-label">Per Azienda</span>
+                            <span class="home-vista-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+        }
+        
+        /**
+         * Copia indirizzo e offre apertura Maps
+         */
+        function copiaEApri(tipo, valore) {
+            if (!valore || valore === '-') {
+                mostraToast('⚠️ Nessun dato');
+                return;
+            }
+            
+            navigator.clipboard.writeText(valore).then(() => {
+                // Chiedi se aprire Maps
+                if (confirm('✅ Copiato!\n\nVuoi aprire in Google Maps?')) {
+                    window.open('https://www.google.com/maps/search/' + encodeURIComponent(valore), '_blank');
+                }
+            }).catch(() => {
+                mostraToast('✅ Copiato: ' + valore);
+            });
+        }
+        
+        /**
+         * Copia telefono e offre di chiamare
+         */
+        function copiaEChiama(telefono) {
+            if (!telefono || telefono === '-') {
+                mostraToast('⚠️ Nessun telefono');
+                return;
+            }
+            
+            navigator.clipboard.writeText(telefono).then(() => {
+                if (confirm('✅ Copiato!\n\nVuoi chiamare ' + telefono + '?')) {
+                    window.location.href = 'tel:' + telefono.replace(/\s/g, '');
+                }
+            }).catch(() => {
+                mostraToast('✅ Copiato: ' + telefono);
+            });
         }
         
         /**
@@ -2428,7 +2777,7 @@
         }
         
         // Log finale
-        console.log('🎯 Posa App v1.67 caricata');
+        console.log('🎯 Posa App v1.68 caricata');
     </script>
 </body>
 </html>
