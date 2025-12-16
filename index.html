@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.72 - OpenPorte</title>
+    <title>🔧 Posa App v1.73 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.72 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.73 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -1040,7 +1040,7 @@
     
     <!-- HEADER COMPATTO -->
     <header class="posa-header">
-        <div class="logo">🔧 v1.72</div>
+        <div class="logo">🔧 v1.73</div>
         <div class="header-actions">
             <button class="header-btn" onclick="caricaProgetto()">📂</button>
             <button id="sync-btn" class="sync-status" onclick="syncManuale()">⟳</button>
@@ -1083,7 +1083,7 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.72 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.73 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
@@ -1205,7 +1205,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.72 - Inizializzazione...');
+            console.log('🔧 Posa App v1.73 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -2265,30 +2265,71 @@
             const content = document.getElementById('posa-content');
             let html = '';
             
-            // Definizione tipi prodotti
+            // Definizione tipi prodotti BASE (senza tapparella - gestita separatamente)
             const tipiProdotti = [
                 { tipo: 'infisso', icon: '🪟', label: 'Infissi', color: '#3b82f6' },
                 { tipo: 'persiana', icon: '🚪', label: 'Persiane', color: '#8b5cf6' },
-                { tipo: 'tapparella', icon: '🎚️', label: 'Tapparelle', color: '#ec4899' },
                 { tipo: 'zanzariera', icon: '🦟', label: 'Zanzariere', color: '#10b981' },
                 { tipo: 'cassonetto', icon: '📦', label: 'Cassonetti', color: '#f59e0b' }
             ];
             
+            // Controlla se ci sono TAPPARELLE vere (serveTapparella=true)
+            const posizioniConTapparella = currentProject.posizioni.filter(pos => 
+                pos.tapparella && pos.tapparella.serveTapparella === true && 
+                (parseInt(pos.tapparella.qta) > 0 || pos.tapparella.quantita > 0)
+            );
+            if (posizioniConTapparella.length > 0) {
+                tipiProdotti.push({ tipo: 'tapparella', icon: '🎚️', label: 'Tapparelle', color: '#ec4899', isTapparella: true });
+            }
+            
+            // Controlla se ci sono MOTORI (serveMotore=true e serveTapparella=false)
+            const posizioniConMotore = currentProject.posizioni.filter(pos => 
+                pos.tapparella && pos.tapparella.serveMotore === true && 
+                pos.tapparella.serveTapparella !== true &&
+                pos.tapparella.motori && pos.tapparella.motori.length > 0
+            );
+            if (posizioniConMotore.length > 0) {
+                tipiProdotti.push({ tipo: 'motore', icon: '⚡', label: 'Motori', color: '#f59e0b', isMotore: true });
+            }
+            
             html += '<div class="prodotti-sections">';
             
             tipiProdotti.forEach(tipoProdotto => {
-                const posizioniConProdotto = currentProject.posizioni.filter(pos => 
-                    pos[tipoProdotto.tipo] && pos[tipoProdotto.tipo].quantita > 0
-                );
+                let posizioniConProdotto;
+                let totaleQuantita;
                 
-                if (posizioniConProdotto.length === 0) {
-                    // Sezione vuota (opzionale, posso skipparla)
-                    return;
+                if (tipoProdotto.isMotore) {
+                    // Motori: filtra posizioni con serveMotore=true e serveTapparella=false
+                    posizioniConProdotto = currentProject.posizioni.filter(pos => 
+                        pos.tapparella && pos.tapparella.serveMotore === true && 
+                        pos.tapparella.serveTapparella !== true &&
+                        pos.tapparella.motori && pos.tapparella.motori.length > 0
+                    );
+                    totaleQuantita = posizioniConProdotto.reduce((sum, pos) => 
+                        sum + (pos.tapparella.motori?.length || 0), 0
+                    );
+                } else if (tipoProdotto.isTapparella) {
+                    // Tapparelle vere: solo se serveTapparella=true
+                    posizioniConProdotto = currentProject.posizioni.filter(pos => 
+                        pos.tapparella && pos.tapparella.serveTapparella === true &&
+                        (parseInt(pos.tapparella.qta) > 0 || pos.tapparella.quantita > 0)
+                    );
+                    totaleQuantita = posizioniConProdotto.reduce((sum, pos) => 
+                        sum + (parseInt(pos.tapparella.qta) || pos.tapparella.quantita || 0), 0
+                    );
+                } else {
+                    // Altri prodotti standard
+                    posizioniConProdotto = currentProject.posizioni.filter(pos => 
+                        pos[tipoProdotto.tipo] && pos[tipoProdotto.tipo].quantita > 0
+                    );
+                    totaleQuantita = posizioniConProdotto.reduce((sum, pos) => 
+                        sum + (pos[tipoProdotto.tipo].quantita || 0), 0
+                    );
                 }
                 
-                const totaleQuantita = posizioniConProdotto.reduce((sum, pos) => 
-                    sum + (pos[tipoProdotto.tipo].quantita || 0), 0
-                );
+                if (posizioniConProdotto.length === 0) {
+                    return;
+                }
                 
                 html += `
                     <div class="prodotto-section">
@@ -2308,15 +2349,29 @@
                 
                 // Lista posizioni con questo prodotto
                 posizioniConProdotto.forEach((pos, idx) => {
-                    const prodotto = pos[tipoProdotto.tipo];
                     const posIndex = currentProject.posizioni.indexOf(pos);
+                    let prodotto, qty, azienda;
+                    
+                    if (tipoProdotto.isMotore) {
+                        prodotto = pos.tapparella;
+                        qty = prodotto.motori?.length || 0;
+                        azienda = prodotto.motoreAzienda || currentProject.configTapparelle?.motoreAzienda || 'Somfy';
+                    } else if (tipoProdotto.isTapparella) {
+                        prodotto = pos.tapparella;
+                        qty = parseInt(prodotto.qta) || prodotto.quantita || 0;
+                        azienda = prodotto.azienda;
+                    } else {
+                        prodotto = pos[tipoProdotto.tipo];
+                        qty = prodotto.quantita || 0;
+                        azienda = prodotto.azienda;
+                    }
                     
                     html += `
                         <div class="prodotto-posizione-item" onclick="apriDettaglioPosizione(${posIndex})">
                             <div class="prodotto-posizione-header">
                                 <div class="prodotto-posizione-id">${pos.id || `P${String(posIndex + 1).padStart(3, '0')}`}</div>
                                 <div class="prodotto-posizione-qty" style="color: ${tipoProdotto.color};">
-                                    ×${prodotto.quantita}
+                                    ×${qty}
                                 </div>
                             </div>
                             <div class="prodotto-posizione-location">
@@ -2328,9 +2383,9 @@
                                     H: ${prodotto.brm?.H || prodotto.BRM_H || 0}mm
                                 </div>
                             ` : ''}
-                            ${prodotto.azienda ? `
+                            ${azienda ? `
                                 <div class="prodotto-posizione-azienda">
-                                    🏢 ${prodotto.azienda}
+                                    🏢 ${azienda}
                                 </div>
                             ` : ''}
                         </div>
@@ -2785,7 +2840,7 @@
         }
         
         // Log finale
-        console.log('🎯 Posa App v1.72 caricata');
+        console.log('🎯 Posa App v1.73 caricata');
     </script>
 </body>
 </html>
