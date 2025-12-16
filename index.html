@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔧 Posa App v1.64 - OpenPorte</title>
+    <title>🔧 Posa App v1.66 - OpenPorte</title>
     
     <style>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.64 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.66 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         /* RESET & BASE */
@@ -162,6 +162,126 @@
             display: block;
         }
         
+        /* ═══════════════════════════════════════════════════════════════
+           MOBILE-FIRST SMARTPHONE OPTIMIZATION
+           ═══════════════════════════════════════════════════════════════ */
+        
+        /* BANNER INFO CLIENTE */
+        .cliente-banner {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            padding: 1rem;
+        }
+        
+        .cliente-nome {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .cliente-contatti {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .cliente-campo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.15);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .cliente-campo:hover, .cliente-campo:active {
+            background: rgba(255,255,255,0.25);
+        }
+        
+        .campo-icon {
+            font-size: 1.2rem;
+        }
+        
+        .campo-valore {
+            flex: 1;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .campo-copia {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* RIEPILOGO QUANTITÀ */
+        .riepilogo-qty {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .qty-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .qty-badge .qty-num {
+            background: white;
+            color: #1e3a5f;
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+        
+        /* HEADER COMPATTO MOBILE */
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .header-actions button {
+            padding: 0.5rem 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* TOAST NOTIFICA COPIA */
+        .toast-copia {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #10b981;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: toastIn 0.3s ease;
+        }
+        
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
         /* TOUCH OPTIMIZATION iPad */
         button, a, label, [onclick] {
             touch-action: manipulation;
@@ -180,11 +300,11 @@
             -webkit-overflow-scrolling: touch;
         }
         
-        /* HEADER */
+        /* HEADER COMPATTO */
         .posa-header {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -195,9 +315,9 @@
         }
         
         .logo {
-            font-size: 1.5rem;
+            font-size: 1rem;
             font-weight: 700;
-            display: flex;
+        }
             align-items: center;
             gap: 0.5rem;
         }
@@ -776,35 +896,47 @@
     <!-- MAIN APP (nascosta fino a login) -->
     <div id="main-app" class="main-app">
     
-    <!-- HEADER -->
+    <!-- HEADER COMPATTO -->
     <header class="posa-header">
-        <div class="logo">
-            🔧 Posa App v1.64
+        <div class="logo">🔧 v1.66</div>
+        <div class="header-actions">
+            <button class="header-btn" onclick="caricaProgetto()">📂</button>
+            <button id="sync-btn" class="sync-status" onclick="syncManuale()">⟳</button>
+            <button class="logout-btn" onclick="doLogout()">🚪</button>
         </div>
-        <div class="project-info">
-            <span id="project-name">Nessun progetto caricato</span>
-            <button class="header-btn" onclick="caricaProgetto()">📂 Carica</button>
-        </div>
-        <button id="sync-btn" class="sync-status" onclick="syncManuale()">
-            ⟳ Sync
-        </button>
-        <button class="logout-btn" onclick="doLogout()" title="Esci">
-            🚪 Esci
-        </button>
     </header>
+    
+    <!-- BANNER INFO CLIENTE (visibile solo con progetto caricato) -->
+    <div id="cliente-banner" class="cliente-banner" style="display: none;">
+        <div class="cliente-nome" id="cliente-nome-display">-</div>
+        <div class="cliente-contatti">
+            <div class="cliente-campo" onclick="copiaClipboard('cliente-indirizzo')">
+                <span class="campo-icon">📍</span>
+                <span class="campo-valore" id="cliente-indirizzo">-</span>
+                <span class="campo-copia">📋</span>
+            </div>
+            <div class="cliente-campo" onclick="copiaClipboard('cliente-telefono')">
+                <span class="campo-icon">📞</span>
+                <span class="campo-valore" id="cliente-telefono">-</span>
+                <span class="campo-copia">📋</span>
+            </div>
+        </div>
+        <!-- RIEPILOGO QUANTITÀ -->
+        <div class="riepilogo-qty" id="riepilogo-qty"></div>
+    </div>
     
     <!-- NAVIGAZIONE VISTE -->
     <nav class="posa-nav">
         <button class="active" onclick="switchView('posizione')">
-            📍 Per Posizione
+            📍 Posizione
             <span class="indicator" id="indicator-posizione"></span>
         </button>
         <button onclick="switchView('prodotto')">
-            🪟 Per Prodotto
+            🪟 Prodotto
             <span class="indicator" id="indicator-prodotto"></span>
         </button>
         <button onclick="switchView('azienda')">
-            🏢 Per Azienda
+            🏢 Azienda
             <span class="indicator" id="indicator-azienda"></span>
         </button>
     </nav>
@@ -824,7 +956,7 @@
     
     <script>
         /* ═══════════════════════════════════════════════════════════════════
-           POSA APP v1.64 - TOKEN PERSONALI & LOGIN SICURO
+           POSA APP v1.66 - TOKEN PERSONALI & LOGIN SICURO
            ═══════════════════════════════════════════════════════════════════ */
         
         // VARIABILI GLOBALI
@@ -946,7 +1078,7 @@
          * Inizializzazione app (chiamata dopo login)
          */
         function init() {
-            console.log('🔧 Posa App v1.64 - Inizializzazione...');
+            console.log('🔧 Posa App v1.66 - Inizializzazione...');
             
             // Setup navigazione
             setupNavigation();
@@ -956,9 +1088,12 @@
             if (savedProject) {
                 try {
                     currentProject = JSON.parse(savedProject);
-                    const projectName = currentProject.customerName || currentProject.name || 'Progetto';
-                    document.getElementById('project-name').textContent = projectName;
+                    const projectName = currentProject.name || currentProject.client || 'Progetto';
                     console.log('✅ Progetto ripristinato:', projectName);
+                    
+                    // Aggiorna banner cliente
+                    aggiornaBannerCliente();
+                    aggiornaRiepilogoQty();
                     
                     // Renderizza vista corrente
                     switchView(currentView);
@@ -998,6 +1133,9 @@
         function switchView(view) {
             currentView = view;
             console.log('🔄 Switch vista:', view);
+            
+            // Reset selezione azienda quando si cambia vista
+            aziendaSelezionata = null;
             
             if (!currentProject) {
                 mostraEmptyState();
@@ -1255,18 +1393,19 @@
                 localStorage.setItem('posa_app_current_project', JSON.stringify(projectData));
                 localStorage.setItem('posa_app_project_path', projectPath);
                 
-                // Aggiorna UI
-                const projectName = projectData.customerName || projectData.name || 'Progetto';
-                document.getElementById('project-name').textContent = projectName;
+                // Aggiorna Banner Cliente
+                aggiornaBannerCliente();
+                aggiornaRiepilogoQty();
                 
+                const projectName = projectData.name || projectData.client || 'Progetto';
                 console.log('✅ Progetto caricato:', projectName);
                 
-                syncBtn.textContent = '✅ Caricato';
+                syncBtn.textContent = '✅';
                 syncBtn.classList.remove('syncing');
                 syncBtn.classList.add('saved');
                 
                 setTimeout(() => {
-                    syncBtn.textContent = '⟳ Sync';
+                    syncBtn.textContent = '⟳';
                     syncBtn.classList.remove('saved');
                 }, 2000);
                 
@@ -1464,11 +1603,29 @@
             const completamento = calcolaCompletamentoPosizione(pos);
             const coloreCompletamento = completamento === 100 ? '#10b981' : completamento > 50 ? '#f59e0b' : '#ef4444';
             
+            // A) Titolo = Ambiente (Camera, Bagno, Sala...)
+            const titolo = pos.ambiente || pos.name || pos.stanza || `Posizione ${index + 1}`;
+            
+            // B) Location senza N/D
+            const piano = pos.piano || '';
+            const locParts = [piano].filter(x => x && x !== 'N/D');
+            const locationStr = locParts.length > 0 ? locParts.join(' - ') : '';
+            
+            // C) Misure BRM (prova vari formati)
+            let misureBRM = '';
+            if (pos.infisso) {
+                const L = pos.infisso.BRM_L || pos.infisso.brm?.L || 0;
+                const H = pos.infisso.BRM_H || pos.infisso.brm?.H || 0;
+                if (L > 0 && H > 0) {
+                    misureBRM = `📏 ${L} × ${H} mm`;
+                }
+            }
+            
             let html = `
                 <div class="posizione-card" onclick="apriDettaglioPosizione(${index})">
                     <!-- Header Card -->
                     <div class="posizione-header">
-                        <div class="posizione-id">${pos.id || `P${String(index + 1).padStart(3, '0')}`}</div>
+                        <div class="posizione-id">${titolo}</div>
                         <div class="posizione-completamento" style="color: ${coloreCompletamento}">
                             ${completamento}%
                         </div>
@@ -1476,19 +1633,12 @@
                     
                     <!-- Info Posizione -->
                     <div class="posizione-info">
-                        <div class="posizione-location">
-                            📍 ${pos.piano || 'N/D'} | ${pos.stanza || 'N/D'}
-                        </div>
-                        ${pos.ambiente ? `<div class="posizione-ambiente">${pos.ambiente}</div>` : ''}
+                        ${locationStr ? `<div class="posizione-location">📍 ${locationStr}</div>` : ''}
+                        ${pos.id ? `<div class="posizione-codice" style="font-size: 0.75rem; color: #a0aec0;">${pos.id}</div>` : ''}
                     </div>
                     
-                    <!-- Misure BRM principali -->
-                    ${pos.infisso?.brm?.L ? `
-                        <div class="posizione-misure">
-                            <span>L: ${pos.infisso.brm.L}mm</span>
-                            <span>H: ${pos.infisso.brm.H || 0}mm</span>
-                        </div>
-                    ` : ''}
+                    <!-- Misure BRM -->
+                    ${misureBRM ? `<div class="posizione-misure" style="font-weight: 600; color: #4f46e5; margin: 0.5rem 0;">${misureBRM}</div>` : ''}
                     
                     <!-- Prodotti -->
                     <div class="prodotti-list">
@@ -1893,6 +2043,9 @@
         /**
          * Vista Per Azienda (placeholder per Step 5)
          */
+        // Variabile per tracciare azienda selezionata
+        let aziendaSelezionata = null;
+        
         function mostraVistaPerAzienda() {
             if (!currentProject || !currentProject.posizioni || currentProject.posizioni.length === 0) {
                 const content = document.getElementById('posa-content');
@@ -1922,103 +2075,171 @@
             }
             
             const content = document.getElementById('posa-content');
-            let html = '<div class="aziende-sections">';
             
-            // Ordina aziende per nome
+            // Se nessuna azienda selezionata, mostra lista aziende
+            if (!aziendaSelezionata) {
+                mostraListaAziende(raggruppamentoAziende);
+            } else {
+                mostraDettaglioAzienda(aziendaSelezionata, raggruppamentoAziende[aziendaSelezionata]);
+            }
+        }
+        
+        /**
+         * Mostra lista aziende come card cliccabili
+         */
+        function mostraListaAziende(raggruppamentoAziende) {
+            const content = document.getElementById('posa-content');
             const aziende = Object.keys(raggruppamentoAziende).sort();
+            
+            let html = `
+                <div style="padding: 1rem;">
+                    <h2 style="color: #2d3748; margin-bottom: 1rem; font-size: 1.3rem;">🏢 Seleziona Fornitore</h2>
+                    <div class="posizioni-grid">
+            `;
             
             aziende.forEach(azienda => {
                 const prodotti = raggruppamentoAziende[azienda];
                 const totalePezzi = prodotti.reduce((sum, p) => sum + p.quantita, 0);
                 const tipiProdotti = [...new Set(prodotti.map(p => p.tipo))];
                 
-                html += `
-                    <div class="azienda-section">
-                        <div class="azienda-section-header">
-                            <div class="azienda-section-title">
-                                <span class="azienda-section-icon">🏢</span>
-                                <span class="azienda-section-label">${azienda}</span>
-                            </div>
-                            <div class="azienda-section-count">
-                                ${tipiProdotti.length} tipolog${tipiProdotti.length !== 1 ? 'ie' : 'ia'} · 
-                                <strong>${totalePezzi} pezzi</strong>
-                            </div>
-                        </div>
-                        
-                        <div class="azienda-section-content">
-                `;
+                // Icona per azienda
+                const iconaAzienda = {
+                    'finstral': '🪟',
+                    'somfy': '⚡',
+                    'palagina': '🦟',
+                    'punto persiane': '🚪',
+                    'plasticino': '🎚️'
+                };
+                const icona = iconaAzienda[azienda.toLowerCase()] || '🏢';
                 
-                // Raggruppa per tipo prodotto
-                const prodottiPerTipo = {};
-                prodotti.forEach(p => {
-                    if (!prodottiPerTipo[p.tipo]) {
-                        prodottiPerTipo[p.tipo] = [];
-                    }
-                    prodottiPerTipo[p.tipo].push(p);
-                });
-                
-                // Renderizza ogni tipo prodotto
-                Object.entries(prodottiPerTipo).forEach(([tipo, items]) => {
-                    const iconMap = {
-                        'infisso': '🪟',
-                        'persiana': '🚪',
-                        'tapparella': '🎚️',
-                        'zanzariera': '🦟',
-                        'cassonetto': '📦'
-                    };
-                    
-                    const labelMap = {
-                        'infisso': 'Infissi',
-                        'persiana': 'Persiane',
-                        'tapparella': 'Tapparelle',
-                        'zanzariera': 'Zanzariere',
-                        'cassonetto': 'Cassonetti'
-                    };
-                    
-                    const totaleQtyTipo = items.reduce((sum, it) => sum + it.quantita, 0);
-                    
-                    html += `
-                        <div class="azienda-prodotto-gruppo">
-                            <div class="azienda-prodotto-tipo-header">
-                                <span>${iconMap[tipo] || '📦'} ${labelMap[tipo] || tipo}</span>
-                                <span class="azienda-prodotto-tipo-qty">×${totaleQtyTipo}</span>
-                            </div>
-                            <div class="azienda-prodotto-lista">
-                    `;
-                    
-                    items.forEach(item => {
-                        html += `
-                            <div class="azienda-prodotto-item" onclick="apriDettaglioPosizione(${item.posizioneIndex})">
-                                <div class="azienda-prodotto-posizione">${item.posizioneId}</div>
-                                <div class="azienda-prodotto-details">
-                                    <div class="azienda-prodotto-location">
-                                        📍 ${item.posizioneLocation}
-                                    </div>
-                                    ${item.misure ? `
-                                        <div class="azienda-prodotto-misure">
-                                            📏 ${item.misure}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                                <div class="azienda-prodotto-qty">×${item.quantita}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `
-                            </div>
-                        </div>
-                    `;
-                });
+                // Colore per azienda
+                const coloreAzienda = {
+                    'finstral': '#4f46e5',
+                    'somfy': '#f59e0b',
+                    'palagina': '#10b981',
+                    'punto persiane': '#8b5cf6',
+                    'plasticino': '#ef4444'
+                };
+                const colore = coloreAzienda[azienda.toLowerCase()] || '#6366f1';
                 
                 html += `
+                    <div class="posizione-card" onclick="selezionaAzienda('${azienda}')" style="border-left: 4px solid ${colore};">
+                        <div class="posizione-header">
+                            <div class="posizione-id" style="color: ${colore};">
+                                ${icona} ${azienda.toUpperCase()}
+                            </div>
+                        </div>
+                        <div class="posizione-info" style="margin: 1rem 0;">
+                            <div style="font-size: 2rem; font-weight: 700; color: ${colore};">${totalePezzi}</div>
+                            <div style="color: #718096;">pezzi totali</div>
+                        </div>
+                        <div class="prodotti-list">
+                            ${tipiProdotti.map(tipo => {
+                                const iconMap = {'infisso': '🪟', 'persiana': '🚪', 'tapparella': '🎚️', 'zanzariera': '🦟', 'cassonetto': '📦'};
+                                const labelMap = {'infisso': 'Infissi', 'persiana': 'Persiane', 'tapparella': 'Tapparelle', 'zanzariera': 'Zanzariere', 'cassonetto': 'Cassonetti'};
+                                const qtyTipo = prodotti.filter(p => p.tipo === tipo).reduce((s, p) => s + p.quantita, 0);
+                                return `<div class="prodotto-item"><span>${iconMap[tipo] || '📦'}</span> <span>${labelMap[tipo] || tipo}</span> <span class="prodotto-qty">×${qtyTipo}</span></div>`;
+                            }).join('')}
+                        </div>
+                        <div class="posizione-footer">
+                            <div></div>
+                            <div class="posizione-action">Vedi dettagli →</div>
                         </div>
                     </div>
                 `;
             });
             
-            html += '</div>';
+            html += '</div></div>';
+            content.innerHTML = html;
+        }
+        
+        /**
+         * Seleziona un'azienda e mostra dettagli
+         */
+        function selezionaAzienda(azienda) {
+            aziendaSelezionata = azienda;
+            mostraVistaPerAzienda();
+        }
+        
+        /**
+         * Torna alla lista aziende
+         */
+        function tornaListaAziende() {
+            aziendaSelezionata = null;
+            mostraVistaPerAzienda();
+        }
+        
+        /**
+         * Mostra dettaglio prodotti di un'azienda
+         */
+        function mostraDettaglioAzienda(azienda, prodotti) {
+            const content = document.getElementById('posa-content');
+            const totalePezzi = prodotti.reduce((sum, p) => sum + p.quantita, 0);
             
+            // Colore per azienda
+            const coloreAzienda = {
+                'finstral': '#4f46e5',
+                'somfy': '#f59e0b',
+                'palagina': '#10b981',
+                'punto persiane': '#8b5cf6',
+                'plasticino': '#ef4444'
+            };
+            const colore = coloreAzienda[azienda.toLowerCase()] || '#6366f1';
+            
+            let html = `
+                <div style="padding: 1rem;">
+                    <!-- Header con bottone indietro -->
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <button onclick="tornaListaAziende()" style="background: #e2e8f0; border: none; padding: 0.75rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                            ← Indietro
+                        </button>
+                        <h2 style="color: ${colore}; margin: 0; font-size: 1.5rem;">🏢 ${azienda.toUpperCase()}</h2>
+                        <span style="background: ${colore}; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600;">${totalePezzi} pezzi</span>
+                    </div>
+            `;
+            
+            // Raggruppa per tipo prodotto
+            const prodottiPerTipo = {};
+            prodotti.forEach(p => {
+                if (!prodottiPerTipo[p.tipo]) prodottiPerTipo[p.tipo] = [];
+                prodottiPerTipo[p.tipo].push(p);
+            });
+            
+            // Renderizza ogni tipo
+            Object.entries(prodottiPerTipo).forEach(([tipo, items]) => {
+                const iconMap = {'infisso': '🪟', 'persiana': '🚪', 'tapparella': '🎚️', 'zanzariera': '🦟', 'cassonetto': '📦'};
+                const labelMap = {'infisso': 'Infissi', 'persiana': 'Persiane', 'tapparella': 'Tapparelle', 'zanzariera': 'Zanzariere', 'cassonetto': 'Cassonetti'};
+                const totaleQty = items.reduce((s, i) => s + i.quantita, 0);
+                
+                html += `
+                    <div style="background: white; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 2px solid #f0f0f0; margin-bottom: 0.75rem;">
+                            <span style="font-weight: 700; font-size: 1.1rem;">${iconMap[tipo] || '📦'} ${labelMap[tipo] || tipo}</span>
+                            <span style="background: ${colore}; color: white; padding: 0.25rem 0.75rem; border-radius: 15px; font-weight: 600;">×${totaleQty}</span>
+                        </div>
+                `;
+                
+                items.forEach(item => {
+                    // Estrai ambiente dalla posizione
+                    const pos = currentProject.posizioni[item.posizioneIndex];
+                    const ambiente = pos?.ambiente || pos?.name || item.posizioneId;
+                    
+                    html += `
+                        <div onclick="apriDettaglioPosizione(${item.posizioneIndex})" style="display: flex; align-items: center; padding: 0.75rem; background: #f8fafc; border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'">
+                            <div style="font-weight: 700; color: ${colore}; min-width: 100px;">${ambiente}</div>
+                            <div style="flex: 1;">
+                                ${item.misure ? `<div style="font-size: 0.9rem; color: #4a5568;">📏 ${item.misure}</div>` : ''}
+                                <div style="font-size: 0.8rem; color: #a0aec0;">${item.posizioneId}</div>
+                            </div>
+                            <div style="font-weight: 700; color: ${colore};">×${item.quantita}</div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            });
+            
+            html += '</div>';
             content.innerHTML = html;
         }
         
@@ -2045,12 +2266,18 @@
                             `L: ${prodotto.brm?.L || prodotto.BRM_L || 0}mm × H: ${prodotto.brm?.H || prodotto.BRM_H || 0}mm` : 
                             null;
                         
+                        // Ambiente senza N/D
+                        const ambiente = pos.ambiente || pos.name || pos.stanza || '';
+                        const piano = pos.piano || '';
+                        const locationParts = [piano, ambiente].filter(x => x && x !== 'N/D');
+                        
                         raggruppamento[azienda].push({
                             tipo: tipo,
                             quantita: prodotto.quantita,
                             posizioneId: pos.id || `P${String(posIndex + 1).padStart(3, '0')}`,
                             posizioneIndex: posIndex,
-                            posizioneLocation: `${pos.piano || 'N/D'} | ${pos.stanza || 'N/D'}`,
+                            posizioneLocation: locationParts.join(' - ') || 'N/D',
+                            ambiente: ambiente,
                             misure: misure
                         });
                     }
@@ -2060,8 +2287,146 @@
             return raggruppamento;
         }
         
+        /**
+         * ═══════════════════════════════════════════════════════════════════
+         * BANNER CLIENTE E RIEPILOGO QUANTITÀ
+         * ═══════════════════════════════════════════════════════════════════
+         */
+        
+        /**
+         * Aggiorna banner con info cliente
+         */
+        function aggiornaBannerCliente() {
+            const banner = document.getElementById('cliente-banner');
+            if (!currentProject) {
+                banner.style.display = 'none';
+                return;
+            }
+            
+            banner.style.display = 'block';
+            
+            // Nome cliente
+            const nome = currentProject.name || currentProject.client || currentProject.customerName || 'Cliente';
+            document.getElementById('cliente-nome-display').textContent = nome;
+            
+            // Indirizzo
+            let indirizzo = '';
+            if (currentProject.clientData) {
+                const cd = currentProject.clientData;
+                const parts = [cd.indirizzo, cd.citta, cd.cap].filter(x => x);
+                indirizzo = parts.join(', ');
+            }
+            if (!indirizzo) {
+                indirizzo = currentProject.indirizzo || currentProject.address || '-';
+            }
+            document.getElementById('cliente-indirizzo').textContent = indirizzo;
+            
+            // Telefono
+            let telefono = '';
+            if (currentProject.clientData && currentProject.clientData.telefono) {
+                telefono = currentProject.clientData.telefono;
+            } else {
+                telefono = currentProject.telefono || currentProject.phone || '-';
+            }
+            document.getElementById('cliente-telefono').textContent = telefono;
+        }
+        
+        /**
+         * Aggiorna riepilogo quantità prodotti
+         */
+        function aggiornaRiepilogoQty() {
+            const container = document.getElementById('riepilogo-qty');
+            if (!currentProject || !currentProject.posizioni) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            // Conta prodotti per tipo
+            const conteggi = {
+                infisso: { icon: '🪟', label: 'Infissi', qty: 0 },
+                persiana: { icon: '🚪', label: 'Persiane', qty: 0 },
+                tapparella: { icon: '🎚️', label: 'Tapparelle', qty: 0 },
+                zanzariera: { icon: '🦟', label: 'Zanzariere', qty: 0 },
+                cassonetto: { icon: '📦', label: 'Cassonetti', qty: 0 }
+            };
+            
+            currentProject.posizioni.forEach(pos => {
+                Object.keys(conteggi).forEach(tipo => {
+                    if (pos[tipo] && pos[tipo].quantita > 0) {
+                        conteggi[tipo].qty += pos[tipo].quantita;
+                    }
+                });
+            });
+            
+            // Genera HTML solo per prodotti presenti
+            let html = '';
+            Object.values(conteggi).forEach(item => {
+                if (item.qty > 0) {
+                    html += `
+                        <div class="qty-badge">
+                            <span>${item.icon}</span>
+                            <span class="qty-num">${item.qty}</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            // Totale posizioni
+            html += `
+                <div class="qty-badge" style="background: rgba(255,255,255,0.3);">
+                    <span>📍</span>
+                    <span class="qty-num">${currentProject.posizioni.length}</span>
+                    <span>pos</span>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        /**
+         * Copia testo negli appunti
+         */
+        function copiaClipboard(elementId) {
+            const elemento = document.getElementById(elementId);
+            const testo = elemento.textContent;
+            
+            if (!testo || testo === '-') {
+                mostraToast('⚠️ Nessun dato da copiare');
+                return;
+            }
+            
+            navigator.clipboard.writeText(testo).then(() => {
+                mostraToast('✅ Copiato: ' + testo);
+            }).catch(err => {
+                // Fallback per browser vecchi
+                const textarea = document.createElement('textarea');
+                textarea.value = testo;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                mostraToast('✅ Copiato: ' + testo);
+            });
+        }
+        
+        /**
+         * Mostra toast notifica
+         */
+        function mostraToast(messaggio) {
+            // Rimuovi toast esistente
+            const esistente = document.querySelector('.toast-copia');
+            if (esistente) esistente.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast-copia';
+            toast.textContent = messaggio;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 2000);
+        }
+        
         // Log finale
-        console.log('🎯 Posa App v1.64 caricata');
+        console.log('🎯 Posa App v1.66 caricata');
     </script>
 </body>
 </html>
